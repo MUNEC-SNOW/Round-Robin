@@ -1,36 +1,37 @@
 #include<iostream>
 #include<string>
 #include<time.h>
+#include<Windows.h>
 using namespace std;
 
 typedef struct pcb {
-	string pName;//½ø³ÌÃû
-	struct pcb* next;//Ö¸ÏòÏÂÒ»¸ö½ø³Ì
-	int arriveTime;//µ½´ïÊ±¼ä
-	int Runningtime;//ÔËĞĞÊ±¼ä
-	char state;//½ø³ÌµÄ×´Ì¬
+	string pName;//è¿›ç¨‹å
+	struct pcb* next;//æŒ‡å‘ä¸‹ä¸€ä¸ªè¿›ç¨‹
+	int arriveTime;//åˆ°è¾¾æ—¶é—´
+	int Runningtime;//è¿è¡Œæ—¶é—´
+	char state;//è¿›ç¨‹çš„çŠ¶æ€
 }PCB;
 
 //made by wk 1806100184 cs182 @gzhu
 
-void createProcess(PCB* p, int n) {//´´½¨n¸ö½ø³Ì£¬´øÍ·½áµã
-	cout << endl << endl << "´´½¨½ø³Ì" << endl;
-	PCB* q = p;//Í·Ö¸ÕëµÄÇ°Ò»¸ö½áµãÖ¸Õë
-	PCB* r = new PCB;//Í·Ö¸Õë
+void createProcess(PCB* p, int n) {//åˆ›å»ºnä¸ªè¿›ç¨‹ï¼Œå¸¦å¤´ç»“ç‚¹
+	cout << endl << endl << "åˆ›å»ºè¿›ç¨‹" << endl;
+	PCB* q = p;//å¤´æŒ‡é’ˆçš„å‰ä¸€ä¸ªç»“ç‚¹æŒ‡é’ˆ
+	PCB* r = new PCB;//å¤´æŒ‡é’ˆ
 	for (int i = 0; i < n; i++) {
-		cout << "ÇëÊäÈëµÚ" << i + 1 << "¸ö½ø³ÌµÄÃû×Ö:";
+		cout << "è¯·è¾“å…¥ç¬¬" << i + 1 << "ä¸ªè¿›ç¨‹çš„åå­—:";
 		cin >> r->pName;
-		//½«µ½´ïÊ±¼äºÍÔËĞĞÊ±¼äËæ»ú¸³Óè1~5
+		//å°†åˆ°è¾¾æ—¶é—´å’Œè¿è¡Œæ—¶é—´éšæœºèµ‹äºˆ1~5
 		r->arriveTime = rand() % 5 + 1;
 		r->Runningtime = rand() % 5 + 1;
-		//³õÊ¼×´Ì¬Îª¾ÍĞ÷×´Ì¬
+		//åˆå§‹çŠ¶æ€ä¸ºå°±ç»ªçŠ¶æ€
 		r->state = 'R';
-		q->next = r;//½«µ±Ç°r½áµã½ÓÈëq->next
-		q = r;//½«r½áµãµÄÄÚÈİ¸øq½áµã
-		r->next = new PCB;//ÎªrµÄÏÂÒ»¸ö½áµãĞÂ½¨Ò»¸öĞèÒª¸³ÖµµÄ½áµã
-		r = r->next;//ÏÂÒ»¸öÑ­»·ÊÇr->nextµÄ¸³Öµ£¬rµÄÄÚÈİÒÑ¾­¸øÓèÁËµ±Ç°µÄq
+		q->next = r;//å°†å½“å‰rç»“ç‚¹æ¥å…¥q->next
+		q = r;//å°†rç»“ç‚¹çš„å†…å®¹ç»™qç»“ç‚¹
+		r->next = new PCB;//ä¸ºrçš„ä¸‹ä¸€ä¸ªç»“ç‚¹æ–°å»ºä¸€ä¸ªéœ€è¦èµ‹å€¼çš„ç»“ç‚¹
+		r = r->next;//ä¸‹ä¸€ä¸ªå¾ªç¯æ˜¯r->nextçš„èµ‹å€¼ï¼Œrçš„å†…å®¹å·²ç»ç»™äºˆäº†å½“å‰çš„q
 	}
-	//ÖÃ¿Õ±ãÓÚÉ¾³ı
+	//ç½®ç©ºä¾¿äºåˆ é™¤
 	r->next = NULL;
 	q->next = NULL;
 	q = NULL;
@@ -39,15 +40,15 @@ void createProcess(PCB* p, int n) {//´´½¨n¸ö½ø³Ì£¬´øÍ·½áµã
 	cout << endl << endl;
 }
 
-void sortOfArriveTime(PCB* p, int n) {//°´µ½´ïÊ±¼ä¶Ô½ø³ÌÅÅĞò
-	PCB* t = new PCB;//ÅÅĞò½»»»µÄÖĞ¼ä´«Öµ½Úµã
+void sortOfArriveTime(PCB* p, int n) {//æŒ‰åˆ°è¾¾æ—¶é—´å¯¹è¿›ç¨‹æ’åº
+	PCB* t = new PCB;//æ’åºäº¤æ¢çš„ä¸­é—´ä¼ å€¼èŠ‚ç‚¹
 	PCB* q = new PCB;
 	PCB* m = new PCB;
-	for (int i = 0; i < n - 1; i++) {//Ã°ÅİÅÅĞòÑ­»·
-		q = p->next;//qÖ¸ÏòÁ´±íÖĞµÄµÚÒ»¸ö½ø³Ì
+	for (int i = 0; i < n - 1; i++) {//å†’æ³¡æ’åºå¾ªç¯
+		q = p->next;//qæŒ‡å‘é“¾è¡¨ä¸­çš„ç¬¬ä¸€ä¸ªè¿›ç¨‹
 		for (int j = 0; j < n - i - 1; j++) {
 			m = q->next;
-			if (q->arriveTime > m->arriveTime) {//Èç¹ûÏÂÒ»¸öµÄµ½´ïÊ±¼äĞ¡ÓÚµ±Ç°µÄµ½´ïÊ±¼ä½áµãĞÅÏ¢½øĞĞ½»»»
+			if (q->arriveTime > m->arriveTime) {//å¦‚æœä¸‹ä¸€ä¸ªçš„åˆ°è¾¾æ—¶é—´å°äºå½“å‰çš„åˆ°è¾¾æ—¶é—´ç»“ç‚¹ä¿¡æ¯è¿›è¡Œäº¤æ¢
 				t->pName = q->pName;
 				t->arriveTime = q->arriveTime;
 				t->Runningtime = q->Runningtime;
@@ -69,45 +70,65 @@ void sortOfArriveTime(PCB* p, int n) {//°´µ½´ïÊ±¼ä¶Ô½ø³ÌÅÅĞò
 	delete q;
 }
 
-void runProcess(PCB* p, int n) {//ÔËĞĞ½ø³Ì
+void runProcess(PCB* p, int n) {//è¿è¡Œè¿›ç¨‹
 	PCB* q = new PCB;
 	PCB* m = new PCB;
-	PCB* s = new PCB;//Ö´ĞĞºóµÄ¾ÍĞ÷¶ÓÁĞ£¨´æ´¢ÒªÔËĞĞµÄ½ø³Ì¶ÓÁĞ£©
-	sortOfArriveTime(p, n);//¶Ô¶ÓÁĞ°´ÕÕµ½´ïÊ±¼ä½øĞĞÅÅĞò
-	q = p;//Ö¸ÏòµÚÒ»¸ö½ø³ÌµÄÇ°Ò»¸ö½áµã
-	m = p->next;//Ö¸ÏòµÚÒ»¸ö½ø³ÌËùÔÚ½áµã
-	int currentTime = 0;//µ±Ç°Ê±¼ä£¬¼´Ê±¼äÆ¬
-	int i = 0;
-	int number = 0;//ÉèÁ¢number×÷Îª±êÖ¾¼ÇÂ¼ÒÑ¾­·ÃÎÊ¹ıµÄ½ø³ÌÊıÁ¿
+	PCB* s = new PCB;//æ‰§è¡Œåçš„å°±ç»ªé˜Ÿåˆ—ï¼ˆå­˜å‚¨è¦è¿è¡Œçš„è¿›ç¨‹é˜Ÿåˆ—ï¼‰
+	sortOfArriveTime(p, n);//å¯¹é˜Ÿåˆ—æŒ‰ç…§åˆ°è¾¾æ—¶é—´è¿›è¡Œæ’åº
+	q = p;//æŒ‡å‘ç¬¬ä¸€ä¸ªè¿›ç¨‹çš„å‰ä¸€ä¸ªç»“ç‚¹
+	m = p->next;//æŒ‡å‘ç¬¬ä¸€ä¸ªè¿›ç¨‹æ‰€åœ¨ç»“ç‚¹
+	int currentTime = 0;//å½“å‰æ—¶é—´
+	int timeCut = 1; //æ—¶é—´ç‰‡,ä¿®æ”¹æ­¤å¤„å¯ä»¥å¾—åˆ°ä¸åŒç»“æœ
+	int number = 0;//è®¾ç«‹numberä½œä¸ºæ ‡å¿—è®°å½•å·²ç»è®¿é—®è¿‡çš„è¿›ç¨‹æ•°é‡
 	while (true) {
-		currentTime++;//Ã¿×ßÒ»´ÎÑ­»·£¬µ±Ç°Ê±¼ä+1£¬¼´Ê±¼äÆ¬¼ÓÒ»£¬´Ë´¦¿ÉÒÔĞŞ¸ÄÒÔ´ïµ½²»Í¬Ê±¼äÆ¬µÄµ÷¶ÈÇé¿ö
+		currentTime++;//æ¯èµ°ä¸€æ¬¡å¾ªç¯ï¼Œå½“å‰æ—¶é—´+1
 		number = 0;
-		while (m && m->state == 'C' || m && m->arriveTime > currentTime) {//Ñ°ÕÒÓ¦¸Ã·ÃÎÊµÄ½ø³Ì
-			number++;//Ã¿·ÃÎÊÒ»¸ö½ø³Ì£¬number+1
+
+		while (m&&m->state=='C'||m&&m->arriveTime>currentTime) {//å¯»æ‰¾åº”è¯¥è®¿é—®çš„è¿›ç¨‹
+			number++;//æ¯è®¿é—®ä¸€ä¸ªè¿›ç¨‹ï¼Œnumber+1
 			q = m;
 			m = m->next;
-			if (m == NULL) {//ÒÑÑ°ÕÒÒ»±é£¬ÖØĞÂ»Øµ½Í·½áµã
+			if (m == NULL) {//å·²å¯»æ‰¾ä¸€éï¼Œé‡æ–°å›åˆ°å¤´ç»“ç‚¹
 				q = p;
 				m = p->next;
 			}
 			if (number > n)
 				break;
 		}
-		if (number > n)//Ã¿¸ö½ø³Ì¶¼ÒÑ¹ıÒ»±é£¬ËùÓĞ½ø³Ì¶¼²»ÄÜ½øĞĞ·ÃÎÊ
+		if (number > n)//æ¯ä¸ªè¿›ç¨‹éƒ½å·²è¿‡ä¸€éï¼Œæ‰€æœ‰è¿›ç¨‹éƒ½ä¸èƒ½è¿›è¡Œè®¿é—®
 			continue;
-		cout << "ÕıÔÚÔËĞĞµÄ½ø³Ì" << endl;
-		cout << "µ±Ç°Ê±¼ä:" << currentTime << endl;
-		cout << "½ø³ÌÃû\tµ½´ïÊ±¼ä  \tÔËĞĞÊ±¼ä \t½ø³Ì×´Ì¬" << endl;//Êä³öµ±Ç°ÕıÔÚÔËĞĞµÄ½ø³Ì
+
+		//çœŸæ­£çš„è¿è¡Œéƒ¨åˆ†
+		cout << "æ­£åœ¨è¿è¡Œçš„è¿›ç¨‹" << endl;
+		cout << "å½“å‰æ—¶é—´:" << currentTime << endl;
+		cout << "è¿›ç¨‹å\tåˆ°è¾¾æ—¶é—´  \tè¿è¡Œæ—¶é—´ \tè¿›ç¨‹çŠ¶æ€" << endl;//è¾“å‡ºå½“å‰æ­£åœ¨è¿è¡Œçš„è¿›ç¨‹
 		cout << m->pName << "\t" << m->arriveTime << "\t  ";
 		cout << m->Runningtime << "\t" << m->state << endl;
-		m->Runningtime--;
-		if (m->Runningtime == 0)//½«ÔËĞĞÊ±¼äÎª0µÄ½ø³Ì×´Ì¬¸ÄÎª¡®C¡¯
+		if (m->Runningtime>=timeCut)//å¦‚æœè¿è¡Œæ—¶é—´æ¯”æ—¶é—´ç‰‡å¤§ï¼Œåˆ™å¯¹åº”å‡å°‘æ—¶é—´ç‰‡
+		{
+			m->Runningtime = m->Runningtime - timeCut;
+		}
+		else
+		{//å¦‚æœè¿è¡Œæ—¶é—´å°äºæ—¶é—´ç‰‡ï¼Œåˆ™å¤šä½™çš„æ—¶é—´æš‚åœï¼Œç­‰æ¶ˆè€—å®Œ
+			for (int j = 1; j <= timeCut-m->Runningtime; j++)
+			{
+				cout << "æ—¶é—´å¤šä½™" << j << "æ¬¡" << endl;
+				Sleep(1000);
+			}
+			m->Runningtime = 0;
+		}
+		if (m->Runningtime == 0)//å°†è¿è¡Œæ—¶é—´ä¸º0çš„è¿›ç¨‹çŠ¶æ€æ”¹ä¸ºâ€˜Câ€™
+		{
 			m->state = 'C';
-		cout << "½ø³Ì" << m->pName << "Ö´ĞĞÒ»´ÎÖ®ºó¾ÍĞ÷¶ÓÁĞÖĞµÄ½ø³Ì" << endl;
-		cout << "½ø³ÌÃû\tµ½´ïÊ±¼ä »¹Ê£ÔËĞĞÊ±¼ä" << endl;
+		}
+		/// ///////////////////////////////////////////////////////
+		
+
+		cout << "è¿›ç¨‹" << m->pName << "æ‰§è¡Œä¸€æ¬¡ä¹‹åå°±ç»ªé˜Ÿåˆ—ä¸­çš„è¿›ç¨‹" << endl;
+		cout << "è¿›ç¨‹å\tåˆ°è¾¾æ—¶é—´ è¿˜å‰©è¿è¡Œæ—¶é—´" << endl;
 		s = p->next;
 
-		while (s) {//Êä³ö¾ÍĞ÷¶ÓÁĞ
+		while (s) {//è¾“å‡ºå°±ç»ªé˜Ÿåˆ—
 			if (s->Runningtime != 0) {
 				cout << s->pName << "\t" << s->arriveTime << "\t  ";
 				cout << s->Runningtime << "\t" << s->state << endl;
@@ -116,17 +137,16 @@ void runProcess(PCB* p, int n) {//ÔËĞĞ½ø³Ì
 		}
 		cout << endl << endl << endl;
 		q = m;
-		m = m->next;//q¡¢mÖ¸ÕëºóÒÆ
-		if (m == NULL) {//»Øµ½Á´±íÍ·²¿
+		m = m->next;//qã€mæŒ‡é’ˆåç§»
+		if (m == NULL) {//å›åˆ°é“¾è¡¨å¤´éƒ¨
 			q = p;
 			m = p->next;
 		}
 		s = p->next;
-		while (s && s->state == 'C')//Èô×´Ì¬ÎªC£¬ÔòÍË³ö¶ÓÁĞ£¬ÏÂÒ»¸ö½ø³Ì½øĞĞ¼ì²â
+		while (s && s->state == 'C')//è‹¥çŠ¶æ€ä¸ºCï¼Œåˆ™é€€å‡ºé˜Ÿåˆ—ï¼Œä¸‹ä¸€ä¸ªè¿›ç¨‹è¿›è¡Œæ£€æµ‹
 			s = s->next;
-		if (s == NULL)//ÈôËùÓĞ½ø³ÌÒÑÍê³É£¬ÔòÍË³öÑ­»·
+		if (s == NULL)//è‹¥æ‰€æœ‰è¿›ç¨‹å·²å®Œæˆï¼Œåˆ™é€€å‡ºå¾ªç¯
 			break;
-		i++;
 	}
 	q = p;
 	m = p->next;
@@ -140,10 +160,10 @@ void runProcess(PCB* p, int n) {//ÔËĞĞ½ø³Ì
 	cout << endl;
 }
 
-void printProcess(PCB* p) {//Êä³öËùÓĞ½ø³ÌµÄĞÅÏ¢
+void printProcess(PCB* p) {//è¾“å‡ºæ‰€æœ‰è¿›ç¨‹çš„ä¿¡æ¯
 	PCB* q = p->next;
-	cout << endl << "µ±Ç°ËùÓĞ½ø³ÌĞÅÏ¢" << endl;
-	cout << "½ø³ÌÃû\tµ½´ïÊ±¼ä\t×´Ì¬ " << endl;
+	cout << endl << "å½“å‰æ‰€æœ‰è¿›ç¨‹ä¿¡æ¯" << endl;
+	cout << "è¿›ç¨‹å\tåˆ°è¾¾æ—¶é—´\tçŠ¶æ€ " << endl;
 	while (q) {
 		cout << q->pName << "\t" << q->arriveTime << "\t  " << q->state << endl;
 		cout << endl;
@@ -155,10 +175,10 @@ void printProcess(PCB* p) {//Êä³öËùÓĞ½ø³ÌµÄĞÅÏ¢
 int main()
 {
 	srand((unsigned)time(NULL));
-	PCB* p = new PCB;//½¨Á¢½ø³Ì¿éÁ´
-	int n;//½ø³ÌÊıËæ»ú
+	PCB* p = new PCB;//å»ºç«‹è¿›ç¨‹å—é“¾
+	int n;//è¿›ç¨‹æ•°éšæœº
 	n = rand() % 6 + 5;
-	cout << "½ø³Ì¸öÊıÎª:" << n << endl;
+	cout << "è¿›ç¨‹ä¸ªæ•°ä¸º:" << n << endl;
 
 	createProcess(p, n);
 	printProcess(p);
